@@ -21,12 +21,12 @@ export default {
       hardSource: false,
       // 添加全局css
       links: [
-        { rel: 'stylesheet', href: "http://at.alicdn.com/t/font_1092043_zapf4yqi50q.css" },
+        // { rel: 'stylesheet', href: "http://at.alicdn.com/t/font_1092043_zapf4yqi50q.css" },
         // { rel: 'stylesheet', href: "http://at.alicdn.com/t/font_1092043_zapf4yqi50q.css" },
         // { rel: 'stylesheet', href: "https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.css" },
       ],
     }],
-    ['./baidu-map-plugin.js'],
+    // ['./baidu-map-plugin.js'],
   ],
 
 
