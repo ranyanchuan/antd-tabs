@@ -244,7 +244,6 @@ class User extends React.Component {
 
     return (
       <div className={styles.user}>
-        <Header/>
         <Search
           onSearch={this.onSearchPannel}
           // 设置ref属性
@@ -282,7 +281,6 @@ class User extends React.Component {
           basicData={basModStatus !== 'add' ? selectedRowObj : {}}
         />
 
-        <Footer/>
       </div>
 
     );

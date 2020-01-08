@@ -1,5 +1,7 @@
 import React from 'react';
 import {connect} from 'dva';
+import router from 'umi/router';
+
 import {Layout, Menu, Tabs, Icon, Badge, Dropdown, Avatar} from 'antd';
 import styles from './index.less';
 
@@ -17,22 +19,14 @@ class BasicLayout extends React.Component {
 
   state = {
     collapsed: false,
-    activeKey: '1',
+    activeKey: 'index',
     panes: [
-      {title: 'Tab 1', content: 'Content of Tab Pane 1', key: '1', closable: false,},
-      {title: 'Tab 2', content: 'Content of Tab Pane 2', key: '2'},
-      {title: 'Tab 2', content: 'Content of Tab Pane 2', key: '3'},
-      {title: 'Tab 2', content: 'Content of Tab Pane 2', key: '4'},
-      {title: 'Tab 2', content: 'Content of Tab Pane 2', key: '5'},
-      {title: 'Tab 2', content: 'Content of Tab Pane 2', key: '6'},
-      {title: 'Tab 2', content: 'Content of Tab Pane 2', key: '7'},
-      {title: 'Tab 2', content: 'Content of Tab Pane 2', key: '8'},
-      {title: 'Tab 2', content: 'Content of Tab Pane 2', key: '9'},
-      {title: 'Tab 2', content: 'Content of Tab Pane 2', key: '10'},
-      {title: 'Tab 2', content: 'Content of Tab Pane 2', key: '11'},
-      {title: 'Tab 2', content: 'Content of Tab Pane 2', key: '12'},
-      {title: 'Tab 2', content: 'Content of Tab Pane 2', key: '13'},
-      {title: 'Tab 2', content: 'Content of Tab Pane 2', key: '14'},
+      {title: '首页', key: 'index', closable: false,},
+      {title: '基础', key: 'basic'},
+      {title: '入库', key: 'inbound'},
+      {title: '物流', key: 'logistics'},
+      {title: '出库', key: 'outbound'},
+      {title: '用户', key: 'user'},
     ]
   }
 
@@ -40,15 +34,20 @@ class BasicLayout extends React.Component {
     this.setState({collapsed});
   };
 
-
   onChangeTab = (activeKey) => {
     this.setState({activeKey});
+    this.goRouter(activeKey); // 路由跳转
   }
+
+  goRouter = (activeKey) => {
+    const url = activeKey !== 'index' ? activeKey : '';
+    router.push(`/${url}`);
+  }
+
 
   onEdit = (targetKey, action) => {
     this[action](targetKey);
   };
-
 
 
   remove = targetKey => {
@@ -67,7 +66,9 @@ class BasicLayout extends React.Component {
         activeKey = panes[0].key;
       }
     }
+
     this.setState({panes, activeKey});
+    this.goRouter(activeKey); // 路由跳转
   };
 
   render() {
@@ -94,9 +95,7 @@ class BasicLayout extends React.Component {
       <div className={styles.basicLayout}>
 
         <Layout style={{minHeight: '100vh'}}>
-
           {/*左边菜单*/}
-
           <Sider
             collapsible
             collapsed={collapsed}
@@ -201,32 +200,6 @@ class BasicLayout extends React.Component {
 
             <Content style={{margin: '0 16px'}}>
 
-              {/*<Tabs*/}
-              {/*hideAdd*/}
-              {/*onChange={this.onChangeTab}*/}
-              {/*activeKey={this.state.activeKey}*/}
-              {/*// type="editable-card"*/}
-              {/*onEdit={this.onEdit}*/}
-              {/*className={styles.tabPage}*/}
-              {/*tabPosition={'top'}*/}
-              {/*>*/}
-              {/*{this.state.panes.map((pane) => {*/}
-              {/*const tabTitle = <div>*/}
-              {/*<span>报销单</span>*/}
-              {/*<Icon type="close" style={{fontSize: 10, marginLeft: 8}}/></div>*/}
-
-              {/*return (*/}
-              {/*<TabPane*/}
-              {/*tab={tabTitle}*/}
-              {/*key={pane.key}*/}
-              {/*style={{margin: 0}}*/}
-              {/*>*/}
-              {/*{pane.content}*/}
-              {/*</TabPane>*/}
-              {/*)*/}
-              {/*})}*/}
-              {/*</Tabs>*/}
-
               <Tabs
                 hideAdd
                 onChange={this.onChangeTab}
@@ -238,10 +211,12 @@ class BasicLayout extends React.Component {
                 size="small"
               >
                 {this.state.panes.map(pane => {
-                  let tabTiltle= <span style={{marginRight:5}}>{pane.title}</span>
+                  let tabTiltle = <span style={{marginRight: 5}}>{pane.title}</span>
                   return (
                     <TabPane tab={tabTiltle} key={pane.key} closable={pane.closable}>
-                      {pane.content}
+                      <div className={styles.tabContent}>
+                        {this.props.children}
+                      </div>
                     </TabPane>
                   )
                 })}

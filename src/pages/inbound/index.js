@@ -286,7 +286,6 @@ class AdminArtist extends React.Component {
 
     return (
       <div className={styles.inbound}>
-        <Header/>
         <Search
           onSearch={this.onSearchPannel}
           // 设置ref属性
@@ -323,7 +322,6 @@ class AdminArtist extends React.Component {
           onSave={this.onClickSaveBasic}
           basicData={basModStatus !== 'add' ? selectedRowObj : {}}
         />
-        <Footer/>
       </div>
 
     );

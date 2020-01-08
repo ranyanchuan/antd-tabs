@@ -266,7 +266,6 @@ class Outbound extends React.Component {
 
     return (
       <div className={styles.inbound}>
-        <Header/>
         <Search
           onSearch={this.onSearchPannel}
           // 设置ref属性
@@ -296,7 +295,6 @@ class Outbound extends React.Component {
           onSave={this.onClickSaveBasic}
           basicData={selectedRowObj}
         />
-        <Footer/>
       </div>
 
 

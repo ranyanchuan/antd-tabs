@@ -230,7 +230,6 @@ class Logistics extends React.Component {
 
     return (
       <div className={styles.logistics}>
-        <Header/>
         <Search
           onSearch={this.onSearchPannel}
           // 设置ref属性
@@ -252,7 +251,6 @@ class Logistics extends React.Component {
           onChange={this.onChangeBasicPage}
           className={styles.newsTable}
         />
-        <Footer/>
 
       </div>
 
