@@ -1,8 +1,11 @@
 import React from 'react';
 import {connect} from 'dva';
 import router from 'umi/router';
+import queryString from 'query-string';
 
 import {Layout, Menu, Tabs, Icon, Badge, Dropdown, Avatar} from 'antd';
+import {tree2Map} from 'utils';
+
 import styles from './index.less';
 
 
@@ -15,6 +18,7 @@ const menuInitArray = [
     code: 'index',
     title: '首页',
     icon: 'home',
+    closable: false
   },
   {
     title: '统计分析',
@@ -63,9 +67,21 @@ const menuInitArray = [
     title: '左树右表',
     icon: 'pic-right',
   },
-
+  {
+    title: '供应商系统',
+    code: 'carry-out',
+    icon: 'carry-out',
+    children: [
+      {title: '基础', code: 'basic', icon: 'bars',},
+      {title: '入库', code: 'inbound', icon: 'import',},
+      {title: '出库', code: 'outbound', icon: 'export',},
+      {title: '物流', code: 'logistics', icon: 'car',},
+    ],
+  },
 ]
 
+
+let menuMap = tree2Map(menuInitArray, 'code');
 
 @connect((state) => ({
   commonModel: state.commonModel,
@@ -76,15 +92,19 @@ class BasicLayout extends React.Component {
   state = {
     collapsed: false,
     activeKey: 'index',
-    panes: [
-      {title: '首页', key: 'index', closable: false,},
-      {title: '基础', key: 'basic'},
-      {title: '入库', key: 'inbound'},
-      {title: '物流', key: 'logistics'},
-      {title: '出库', key: 'outbound'},
-      {title: '用户', key: 'user'},
-    ]
+    panes: {
+      index: {title: '首页', code: 'index', closable: false},
+    }
   }
+
+
+  componentDidMount() {
+    const {pathname} = this.props.location;
+    const url = pathname.replace('/', '');
+    let activeKey = url ? url : 'index';
+    this.openTab(activeKey, menuMap[activeKey]);
+  }
+
 
   onCollapse = collapsed => {
     this.setState({collapsed});
@@ -106,35 +126,49 @@ class BasicLayout extends React.Component {
   };
 
 
+  onClickLeftMenu = (data) => {
+    const {key, item} = data;
+    if (item.props) {
+      const {dataRef} = item.props;
+      this.openTab(key, dataRef)
+    }
+  }
+
+  openTab = (key, item) => {
+    let result = {activeKey: key};
+    let {panes} = this.state;
+    panes[key] = item;
+    result.panes = panes;
+    this.setState(result);
+    this.goRouter(key);
+  }
+
+
   remove = targetKey => {
-    let {activeKey} = this.state;
-    let lastIndex;
-    this.state.panes.forEach((pane, i) => {
-      if (pane.key === targetKey) {
-        lastIndex = i - 1;
+    let {activeKey, panes} = this.state;
+    console.log("panespanes", panes);
+    if (activeKey !== 'index') {
+      let proCode = 'index';
+      for (let index in panes) {
+        const {code} = panes[index];
+        if (code === activeKey) {
+          break;
+        }
+        proCode = code;
       }
-    });
-    const panes = this.state.panes.filter(pane => pane.key !== targetKey);
-    if (panes.length && activeKey === targetKey) {
-      if (lastIndex >= 0) {
-        activeKey = panes[lastIndex].key;
-      } else {
-        activeKey = panes[0].key;
-      }
+      delete  panes[activeKey];
+      this.setState({panes, activeKey: proCode});
+      this.goRouter(proCode); // 路由跳转
     }
 
-    this.setState({panes, activeKey});
-    this.goRouter(activeKey); // 路由跳转
   };
 
 
+  // 构建左边menu
   renderMenu = (menuInitArray) => {
-
     return menuInitArray.map(item => {
-
       const {code, children, title, icon} = item;
       if (children && children.length > 0) {
-
         return (
           <SubMenu
             key={code}
@@ -150,24 +184,36 @@ class BasicLayout extends React.Component {
         )
       } else {
         return (
-          <Menu.Item key={code}>
+          <Menu.Item key={code} dataRef={item}>
             <Icon type={icon}/>
             <span>{title}</span>
           </Menu.Item>
         )
       }
-
     })
+  }
 
 
+  //
+  getTabPane = (panes) => {
+    let result = [];
+    for (let index in panes) {
+      const {code, closable, title} = panes[index];
+      let tabTiltle = <span style={{marginRight: 5}}>{title}</span>
+      result.push(
+        <TabPane tab={tabTiltle} key={index} closable={closable}>
+          <div className={styles.tabContent}>
+            {this.props.children}
+          </div>
+        </TabPane>)
+    }
+    return result;
   }
 
 
   render() {
 
-    const {collapsed} = this.state;
-
-
+    const {collapsed, activeKey, panes} = this.state;
     // 用户信息
     const menu = (
       <Menu>
@@ -195,7 +241,6 @@ class BasicLayout extends React.Component {
             collapsed={collapsed}
             onCollapse={this.onCollapse}
             className={styles.sider}
-
           >
             <div className={styles.logo}>
               <a href="">
@@ -208,7 +253,9 @@ class BasicLayout extends React.Component {
             </div>
             <Menu
               theme="dark"
-              defaultSelectedKeys={['1']}
+              defaultSelectedKeys={[activeKey]}
+              selectedKeys={[activeKey]}
+              onClick={this.onClickLeftMenu}
               mode="inline">
               {this.renderMenu(menuInitArray)}
             </Menu>
@@ -268,16 +315,7 @@ class BasicLayout extends React.Component {
                 className={styles.tabPage}
                 size="small"
               >
-                {this.state.panes.map(pane => {
-                  let tabTiltle = <span style={{marginRight: 5}}>{pane.title}</span>
-                  return (
-                    <TabPane tab={tabTiltle} key={pane.key} closable={pane.closable}>
-                      <div className={styles.tabContent}>
-                        {this.props.children}
-                      </div>
-                    </TabPane>
-                  )
-                })}
+                {panes && this.getTabPane(panes)}
               </Tabs>
 
             </Content>

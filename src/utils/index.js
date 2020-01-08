@@ -42,3 +42,28 @@ export function addUidList(fileUrlList) {
 export function randomNum(m, n) {
   return Math.floor(Math.random() * (m - n) + n);
 }
+
+
+// 获取树选中的值
+export function tree2Map(data, key) {
+  let map = {};
+  treeMap(data, map, key);
+  return map;
+}
+
+
+export function treeMap(data, map, key) {
+
+  if (!Array.isArray(data)) {
+    return data;
+  }
+
+  for (let item of data) {
+    let {children} = item;
+    map[item[key]] = item;
+    if (children) {
+      treeMap(children, map, key);
+    }
+  }
+  return map;
+}
