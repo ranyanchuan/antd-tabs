@@ -6,6 +6,7 @@ import {checkError, checkEdit, getPageParam, string2Moment} from 'utils';
 
 import ConTablePopover from 'components/ConTablePopover';
 import ConTableStateAction from 'components/ConTableStateAction';
+import ConEditTable from 'components/ConEditTable';
 
 // import Search from './Search';
 // import ActionModal from './Modal';
@@ -213,20 +214,21 @@ class ProductAd extends React.Component {
           {/*basicData={status !== 'add' ? modalDataObj : {}}*/}
           {/*/>*/}
 
-          <Table
-            rowKey={record => record.id.toString()}
-            // rowSelection={rowSelection}
-            columns={this.columns}
-            size="small"
-            dataSource={rows}
-            pagination={{
-              current: pageIndex,
-              total,
-              pageSize,
-            }}
-            scroll={{x: 'max-content'}}
-            onChange={this.onChangePage}
-          />
+          {/*<Table*/}
+          {/*rowKey={record => record.id.toString()}*/}
+          {/*// rowSelection={rowSelection}*/}
+          {/*columns={this.columns}*/}
+          {/*size="small"*/}
+          {/*dataSource={rows}*/}
+          {/*pagination={{*/}
+          {/*current: pageIndex,*/}
+          {/*total,*/}
+          {/*pageSize,*/}
+          {/*}}*/}
+          {/*scroll={{x: 'max-content'}}*/}
+          {/*onChange={this.onChangePage}*/}
+          {/*/>*/}
+          <ConEditTable/>
         </Spin>
       </div>
     );
