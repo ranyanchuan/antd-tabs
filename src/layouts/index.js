@@ -10,6 +10,62 @@ const {Header, Content, Footer, Sider} = Layout;
 const {SubMenu} = Menu;
 const {TabPane} = Tabs;
 
+const menuInitArray = [
+  {
+    code: 'index',
+    title: '首页',
+    icon: 'home',
+  },
+  {
+    title: '统计分析',
+    code: 'dashboard',
+    icon: 'dashboard',
+    children: [
+      {
+        code: 'pie-chart',
+        title: '饼图',
+        icon: 'pie-chart',
+      },
+      {
+        code: 'bar-chart',
+        title: '条形图',
+        icon: 'bar-chart',
+      },
+      {
+        code: 'radar-chart',
+        title: '雷达图',
+        icon: 'radar-chart',
+      }
+    ],
+  },
+  {
+    code: 'single-table',
+    title: '单表查询',
+    icon: 'table',
+  },
+  {
+    code: 'line-edit',
+    title: '行内编辑',
+    icon: 'number',
+  },
+  {
+    code: 'main-children',
+    title: '一主多子',
+    icon: 'cluster',
+  },
+  {
+    code: 'tree-card',
+    title: '左树右卡',
+    icon: 'layout',
+  },
+  {
+    code: 'tree-table',
+    title: '左树右表',
+    icon: 'pic-right',
+  },
+
+]
+
 
 @connect((state) => ({
   commonModel: state.commonModel,
@@ -71,9 +127,46 @@ class BasicLayout extends React.Component {
     this.goRouter(activeKey); // 路由跳转
   };
 
+
+  renderMenu = (menuInitArray) => {
+
+    return menuInitArray.map(item => {
+
+      const {code, children, title, icon} = item;
+      if (children && children.length > 0) {
+
+        return (
+          <SubMenu
+            key={code}
+            title={
+              <span>
+                  <Icon type={icon}/>
+                  <span>{title}</span>
+              </span>
+            }
+          >
+            {this.renderMenu(children)}
+          </SubMenu>
+        )
+      } else {
+        return (
+          <Menu.Item key={code}>
+            <Icon type={icon}/>
+            <span>{title}</span>
+          </Menu.Item>
+        )
+      }
+
+    })
+
+
+  }
+
+
   render() {
 
     const {collapsed} = this.state;
+
 
     // 用户信息
     const menu = (
@@ -89,6 +182,7 @@ class BasicLayout extends React.Component {
         </Menu.Item>
       </Menu>
     );
+
 
     return (
 
@@ -116,43 +210,7 @@ class BasicLayout extends React.Component {
               theme="dark"
               defaultSelectedKeys={['1']}
               mode="inline">
-              <Menu.Item key="1">
-                <Icon type="pie-chart"/>
-                <span>Option 1</span>
-              </Menu.Item>
-              <Menu.Item key="2">
-                <Icon type="desktop"/>
-                <span>Option 2</span>
-              </Menu.Item>
-              <SubMenu
-                key="sub1"
-                title={
-                  <span>
-                  <Icon type="user"/>
-                  <span>User</span>
-                </span>
-                }
-              >
-                <Menu.Item key="3">Tom</Menu.Item>
-                <Menu.Item key="4">Bill</Menu.Item>
-                <Menu.Item key="5">Alex</Menu.Item>
-              </SubMenu>
-              <SubMenu
-                key="sub2"
-                title={
-                  <span>
-                  <Icon type="team"/>
-                  <span>Team</span>
-                </span>
-                }
-              >
-                <Menu.Item key="6">Team 1</Menu.Item>
-                <Menu.Item key="8">Team 2</Menu.Item>
-              </SubMenu>
-              <Menu.Item key="9">
-                <Icon type="file"/>
-                <span>File</span>
-              </Menu.Item>
+              {this.renderMenu(menuInitArray)}
             </Menu>
           </Sider>
 
