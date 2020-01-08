@@ -1,10 +1,28 @@
-import { resolve } from 'path';
+import {resolve} from 'path';
 
 // const path = require('path');
 // ref: https://umijs.org/config/
 // https://blog.csdn.net/SCU_Cindy/article/details/82914547 路由配置
 
 export default {
+
+
+  routes: [
+    {
+      path: '/',
+      component: '../layouts/index',
+      routes: [
+        // {path: '/', redirect: './index'},
+        {path: '/', component: './index'},
+        {path: '/line-edit', component: './line-edit/components/'},
+        // {path: '/department', component: './department/components/'},
+        // {path: '/menus', component: './menus/components/'},
+        // {path: '/role', component: './role/components/'}
+      ]
+    }
+  ],
+
+
   plugins: [
     // ref: https://umijs.org/plugin/umi-plugin-react.html
     ['umi-plugin-react', {
@@ -15,9 +33,13 @@ export default {
       dynamicImport: false,
       title: 'yaoyan-antd',
       dll: false,
-      routes: {
-        exclude: [],
-      },
+
+      // routes: {
+      //   exclude: [],
+      // },
+
+
+
       hardSource: false,
       // 添加全局css
       links: [

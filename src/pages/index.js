@@ -15,7 +15,6 @@ class Retail extends React.Component {
     console.log("index componentDidMount");
   }
 
-
   render() {
 
     return (

@@ -1,3 +1,5 @@
+import moment from 'moment';
+
 /**
  /**
  * 生成唯一字符串
@@ -66,4 +68,8 @@ export function treeMap(data, map, key) {
     }
   }
   return map;
+}
+
+export function string2Moment(text, ruleDate = 'YYYY-MM-DD HH:mm') {
+  return text ? moment(text).format(ruleDate) : '';
 }
