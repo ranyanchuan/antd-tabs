@@ -15,6 +15,12 @@ export default {
         // {path: '/', redirect: './index'},
         {path: '/', component: './index'},
         {path: '/line-edit', component: './line-edit/components/'},
+        {path: '/pie-chart', component: './pie-chart/components/'},
+        {path: '/bar-chart', component: './bar-chart/components/'},
+        {path: '/radar-chart', component: './radar-chart/components/'},
+        {path: '/single-table', component: './single-table/components/'},
+        {path: '/main-children', component: './main-children/components/'},
+        {path: '/tree-card', component: './tree-card/components/'},
         // {path: '/department', component: './department/components/'},
         // {path: '/menus', component: './menus/components/'},
         // {path: '/role', component: './role/components/'}
@@ -61,12 +67,40 @@ export default {
 
 
   proxy: {
-    '/api': {
-      target: 'http://127.0.0.1:27000/',
+    '/admin': {
+      target: 'http://127.0.0.1:8080',
       // target: 'http://192.168.43.30:8888/',
       // target: 'http://192.144.173.229:27000/',
       changeOrigin: true,
       // pathRewrite: { "^/api" : ""}
+    },
+    '/dologin': {
+      target: 'http://127.0.0.1:8080',
+      // target: 'http://192.168.43.30:8888/',
+      // target: 'http://192.144.173.229:27000/',
+      changeOrigin: true,
+      // pathRewrite: { "^/api" : ""}
+    },
+    '/logout': {
+      target: 'http://127.0.0.1:8080',
+      changeOrigin: true,
+    },
+
+    '/login': {
+      target: 'http://127.0.0.1:8080',
+      changeOrigin: true,
+    },
+    '/resources': {
+      target: 'http://127.0.0.1:8080',
+      changeOrigin: true,
+    },
+    '/needCode': {
+      target: 'http://127.0.0.1:8080',
+      changeOrigin: true,
+    },
+    '/work': {
+      target: 'http://127.0.0.1:8080',
+      changeOrigin: true,
     },
   },
 };

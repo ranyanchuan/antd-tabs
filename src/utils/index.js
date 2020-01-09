@@ -73,3 +73,22 @@ export function treeMap(data, map, key) {
 export function string2Moment(text, ruleDate = 'YYYY-MM-DD HH:mm') {
   return text ? moment(text).format(ruleDate) : '';
 }
+
+
+// 判断是否要显示弹框底部按钮
+export function footer(disabled) {
+  let result = null;
+  if (disabled) {
+    result = { footer: null };
+  }
+  return result;
+}
+
+// json 数据转换成表单格式
+export function formData(payload) {
+  let data = new FormData();
+  for (let key in payload) {   // 转换表单
+    data.append(key, payload[key]);
+  }
+  return data;
+}

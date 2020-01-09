@@ -1,49 +1,25 @@
 /* eslint-disable import/first */
-/**
- * Created by ranyanchuan on 2018/3/11.
- */
+
 import React from 'react';
-import a01 from 'assets/img/a01.jpg';
-import a02 from 'assets/img/a02.jpg';
-import a03 from 'assets/img/a03.jpg';
+import { Icon, Result } from 'antd';
 
-import styles from './index.less';
+class Home extends React.Component {
 
-class Retail extends React.Component {
+  state = {
 
-  componentDidMount() {
-    console.log("index componentDidMount");
-  }
+  };
 
   render() {
-
+    // 判断404
     return (
-      <div className={styles.iconContent}>
+      <Result
+        style={{ paddingTop: 100,backgroundColor: '#fff' }}
+        icon={<Icon type="smile" theme="twoTone"/>}
+        title="Great, we have done all the operations!"
+      />
 
-        <div className={styles.iconItem}>
-          <img src={a01} alt=""/>
-          <div className={styles.goTitle}>
-            <a href="/inbound">采购信息</a>
-          </div>
-        </div>
-
-        <div className={styles.iconItem}>
-          <img src={a02} alt=""/>
-          <div className={styles.goTitle}>
-            <a href="/outbound">销售信息</a>
-
-          </div>
-        </div>
-
-        <div className={styles.iconItem}>
-          <img src={a03} alt=""/>
-          <div className={styles.goTitle}>
-            <a href="/logistics">物流信息</a>
-          </div>
-        </div>
-      </div>
     );
   }
 }
 
-export default Retail;
+export default Home;

@@ -8,7 +8,7 @@ import ConTablePopover from 'components/ConTablePopover';
 import ConTableStateAction from 'components/ConTableStateAction';
 import ConEditTable from 'components/ConEditTable';
 
-// import Search from './Search';
+import Search from './Search';
 // import ActionModal from './Modal';
 
 
@@ -81,7 +81,7 @@ class ProductAd extends React.Component {
 
   // 搜索面板值
   onSearchPannel = (param) => {
-    this.getAdData({...param});
+    // this.getAdData({...param});
   };
 
   // 展示弹框
@@ -193,41 +193,17 @@ class ProductAd extends React.Component {
 
       <div>
         <Spin spinning={loading}>
-          {/*<Search*/}
-          {/*onSearch={this.onSearchPannel}*/}
-          {/*// 设置ref属性*/}
-          {/*onRef={(ref) => {*/}
-          {/*this.child = ref;*/}
-          {/*}}*/}
-          {/*/>*/}
+          <Search
+            onSearch={this.onSearchPannel}
+            onRef={(ref) => {// 设置ref属性
+              this.child = ref;
+            }}
+          />
           <div className="table-operations">
             <Button onClick={this.onShowModal.bind(this, 'add')}>编辑</Button>
             <Button onClick={this.onShowModal.bind(this, 'add')}>删除</Button>
           </div>
 
-          {/*弹框*/}
-          {/*<ActionModal*/}
-          {/*visible={visible}*/}
-          {/*onSave={this.addAdData}*/}
-          {/*status={status}*/}
-          {/*onClose={this.onClickClose}*/}
-          {/*basicData={status !== 'add' ? modalDataObj : {}}*/}
-          {/*/>*/}
-
-          {/*<Table*/}
-          {/*rowKey={record => record.id.toString()}*/}
-          {/*// rowSelection={rowSelection}*/}
-          {/*columns={this.columns}*/}
-          {/*size="small"*/}
-          {/*dataSource={rows}*/}
-          {/*pagination={{*/}
-          {/*current: pageIndex,*/}
-          {/*total,*/}
-          {/*pageSize,*/}
-          {/*}}*/}
-          {/*scroll={{x: 'max-content'}}*/}
-          {/*onChange={this.onChangePage}*/}
-          {/*/>*/}
           <ConEditTable/>
         </Spin>
       </div>

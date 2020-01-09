@@ -278,7 +278,7 @@ class Attchment extends React.Component {
           {...footer(disabled)}
           width="400px"
         >
-          <Spin spinning={confirmLoading}>
+          <Spin spinning={false}>
             <Form onSubmit={this.handleSubmit}>
               <Row>
                 <Col span={24}>

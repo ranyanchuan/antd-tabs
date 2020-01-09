@@ -1,18 +1,18 @@
 import React from 'react';
-
-import { Form, Row, Col, Input, Button, Select } from 'antd';
-import { formatFormDateRange } from 'utils';
-import ConInput from 'components/ConInput';
+import {Form, Row, Col, Button} from 'antd';
 import ConSelect from 'components/ConSelect';
+import ConInput from 'components/ConInput';
 import ConRangePicker from 'components/ConRangePicker';
 
-import styles from './index.less';
-import moment from 'moment';
+const ruleDate = 'YYYY-MM-DD HH:mm:ss';
+
 
 @Form.create()
 
 class Search extends React.Component {
-  state = {};
+  state = {
+    expand: false,
+  };
 
   componentDidMount() {
     // 在父组件上绑定子组件方法
@@ -29,15 +29,18 @@ class Search extends React.Component {
 
   // 获取表单内容
   getSearchValue = () => {
-    let param = {};
+    const param = {};
     this.props.form.validateFields((err, values) => {
-
       for (const key in values) {
+
+        if (key === 'createtime' && values[key]) {  // 日期处理
+          param[key] = values[key].map(item => item.format(ruleDate)).toString();
+          continue;
+        }
         if (values[key]) {
           param[key] = values[key];
         }
       }
-      // param = formatFormDateRange(param, ['starttime', 'endtime'], 'YYYY-MM-DD 00:00:00');
     });
     return param;
   };
@@ -50,13 +53,11 @@ class Search extends React.Component {
 
   render() {
 
-    const { form } = this.props;
-
+    const {form} = this.props;
     const formItemLayout = {
-      labelCol: { sm: { span: 8 } },
-      wrapperCol: { sm: { span: 16 } },
+      labelCol: {sm: {span: 7}},
+      wrapperCol: {sm: {span: 17}},
     };
-
 
     return (
       <div className="search-body">
@@ -66,43 +67,58 @@ class Search extends React.Component {
         >
 
           <Row gutter={24}>
-            <Col span={8}>
+
+
+            <Col span={6}>
               <ConInput
                 form={form}
                 formItemLayout={formItemLayout}
-                id="text"
-                label="标题"
-                placeholder="请输入标题"
+                id="version"
+                label="版本号"
+                placeholder="请输入版本号"
               />
-
             </Col>
 
-            <Col span={8}>
+            <Col span={6}>
               <ConSelect
                 form={form}
                 formItemLayout={formItemLayout}
-                id="bannertype"
-                label="下拉"
-                placeholder="请选择下拉"
-                data={['下拉1', '下拉2']}
+                id="type"
+                label="APP类型"
+                placeholder="请选择属性"
+                data={[
+                  {id: '0', value: 'IOS'},
+                  {id: '1', value: 'ANDROID'},
+                ]}
+              />
+            </Col>
+            <Col span={6}>
+              <ConSelect
+                form={form}
+                formItemLayout={formItemLayout}
+                id="isupdate"
+                label="强制更新"
+                placeholder="请选择是否更新"
+                data={[
+                  {id: '0', value: '否'},
+                  {id: '1', value: '是'},
+                ]}
               />
             </Col>
 
-            {/*日期区间*/}
-            <Col span={8}>
+            <Col span={6}>
               <ConRangePicker
                 form={form}
                 formItemLayout={formItemLayout}
-                id="date"
-                label="日期"
+                id="createtime"
+                label="添加时间"
               />
             </Col>
           </Row>
-
           <Row>
             <Col span={24} className="search-footer">
               <Button type="primary" htmlType="submit">查询</Button>
-              <Button style={{ marginLeft: 8 }} onClick={this.handleReset}>清空</Button>
+              <Button style={{marginLeft: 8}} onClick={this.handleReset}>清空</Button>
             </Col>
           </Row>
         </Form>

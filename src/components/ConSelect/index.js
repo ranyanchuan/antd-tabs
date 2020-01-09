@@ -12,13 +12,37 @@ const Option = Select.Option;
 
 class ConSelect extends React.Component {
   render() {
-    const { formItemLayout, defValue, disabled, form, required = false, label, id, message, placeholder, data = [], mode } = this.props;
+    const {
+      formItemLayout = {
+        labelCol: { sm: { span: 6 } },
+        wrapperCol: { sm: { span: 18 } },
+      },
+      defValue,
+      disabled,
+      form,
+      required = false,
+      label,
+      id,
+      message,
+      placeholder,
+      data = [],
+      mode,
+      optionKey = 'id',
+      optionValue = 'value',
+      allowClear=true,
+    } = this.props;
     const { getFieldDecorator } = form;
 
     const children = [];
     for (const item of data) {
-      children.push(<Option key={uuid()} value={item}>{item}</Option>);
+      if (item[optionValue]) {
+        children.push(<Option key={uuid()} value={item[optionKey]}>{item[optionValue]}</Option>);
+      } else {
+        children.push(<Option key={uuid()} value={item}>{item}</Option>);
+      }
+
     }
+
 
     return (
       <div>
@@ -33,6 +57,7 @@ class ConSelect extends React.Component {
             <Select placeholder={placeholder}
                     disabled={disabled}
                     mode={mode}
+                    allowClear={allowClear}
                     style={{ width: '100%' }}
             >
               {children}

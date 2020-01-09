@@ -65,19 +65,19 @@ class EditableTable extends React.Component {
     this.state = {data, editingKey: ''};
     this.columns = [
       {
-        title: 'name',
+        title: '姓名',
         dataIndex: 'name',
         width: '25%',
         editable: true,
       },
       {
-        title: 'age',
+        title: '年龄',
         dataIndex: 'age',
         width: '15%',
         editable: true,
       },
       {
-        title: 'address',
+        title: '地址',
         dataIndex: 'address',
         width: '40%',
         editable: true,

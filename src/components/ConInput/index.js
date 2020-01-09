@@ -8,7 +8,21 @@ import { Form, Input } from 'antd';
 
 class ConInput extends React.Component {
   render() {
-    const { formItemLayout, defValue, disabled, form, required = false, label, id, message, placeholder } = this.props;
+    const {
+      formItemLayout = {
+        labelCol: { sm: { span: 6 } },
+        wrapperCol: { sm: { span: 18 } },
+      },
+      defValue = '',
+      type,
+      disabled,
+      form,
+      required = false,
+      label,
+      id,
+      message,
+      placeholder,
+    } = this.props;
     const { getFieldDecorator } = form;
     return (
       <div>
@@ -20,7 +34,7 @@ class ConInput extends React.Component {
             rules: [{ required, message }],
             initialValue: defValue,
           })(
-            <Input placeholder={placeholder} disabled={disabled}/>,
+            <Input placeholder={placeholder} disabled={disabled} type={type}/>,
           )}
         </Form.Item>
       </div>
