@@ -136,7 +136,7 @@ class EditableTable extends React.Component {
             <span>
             <a disabled={editingKey !== ''} onClick={() => this.edit(record.key)}>编辑</a>
             <Divider type="vertical"/>
-            <a onClick={() => this.edit(record.key)}>查看</a>
+            <a disabled={editingKey !== ''} onClick={() => this.edit(record.key)}>查看</a>
             </span>
           );
         },
