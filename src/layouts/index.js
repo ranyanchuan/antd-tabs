@@ -11,81 +11,6 @@ const {Header, Content, Footer, Sider} = Layout;
 const {SubMenu} = Menu;
 const {TabPane} = Tabs;
 
-const menuInitArray = [
-  {
-    code: 'index',
-    title: '首页',
-    icon: 'home',
-    closable: false
-  },
-  {
-    title: '统计分析',
-    code: 'dashboard',
-    icon: 'dashboard',
-    children: [
-      {
-        code: 'pie-chart',
-        title: '饼图',
-        icon: 'pie-chart',
-      },
-      {
-        code: 'bar-chart',
-        title: '条形图',
-        icon: 'bar-chart',
-      },
-      {
-        code: 'radar-chart',
-        title: '雷达图',
-        icon: 'radar-chart',
-      },
-      {
-        code: 'scatter-chart',
-        title: '散点图',
-        icon: 'dot-chart',
-      }
-    ],
-  },
-  {
-    code: 'single-table',
-    title: '单表查询',
-    icon: 'table',
-  },
-  {
-    code: 'line-edit',
-    title: '行内编辑',
-    icon: 'number',
-  },
-  {
-    code: 'main-children',
-    title: '一主多子',
-    icon: 'cluster',
-  },
-  {
-    code: 'tree-card',
-    title: '左树右卡',
-    icon: 'layout',
-  },
-  {
-    code: 'tree-table',
-    title: '左树右表',
-    icon: 'pic-right',
-  },
-  {
-    title: '供应商系统',
-    code: 'carry-out',
-    icon: 'carry-out',
-    children: [
-      {title: '基础', code: 'basic', icon: 'bars',},
-      {title: '入库', code: 'inbound', icon: 'import',},
-      {title: '出库', code: 'outbound', icon: 'export',},
-      {title: '物流', code: 'logistics', icon: 'car',},
-    ],
-  },
-]
-
-
-let menuMap = tree2Map(menuInitArray, 'code');
-
 @connect((state) => ({
   commonModel: state.commonModel,
 }))
@@ -97,16 +22,37 @@ class BasicLayout extends React.Component {
     activeKey: 'index',
     panes: {
       index: {title: '首页', code: 'index', closable: false},
-    }
+    },
+    menuInitArray:[],
   }
+
+  menuMap=null;
 
 
   componentDidMount() {
-    const {pathname} = this.props.location;
-    const url = pathname.replace('/', '');
-    let activeKey = url ? url : 'index';
-    this.openTab(activeKey, menuMap[activeKey]);
+    this.getMenu();
   }
+
+  // 获取菜单
+  getMenu = (payload = {}) => {
+    this.props.dispatch({
+      type: 'commonModel/getMenuTree',
+      payload,
+      callback: (menuInitArray) => {
+        // todo 获取菜单
+        this.setState({menuInitArray});
+        this.menuMap = tree2Map(menuInitArray, 'code');
+
+        // 打开默认标签
+        const {pathname} = this.props.location;
+        const url = pathname.replace('/', '');
+        let activeKey = url ? url : 'index';
+        this.openTab(activeKey, this.menuMap[activeKey]);
+
+      },
+    });
+  }
+
 
 
   onCollapse = collapsed => {
@@ -221,7 +167,7 @@ class BasicLayout extends React.Component {
 
   render() {
 
-    const {collapsed, activeKey, panes} = this.state;
+    const {collapsed, activeKey, panes,menuInitArray} = this.state;
     // 用户信息
     const menu = (
       <Menu>
@@ -328,7 +274,7 @@ class BasicLayout extends React.Component {
               </div>
 
             </Content>
-            <Footer style={{textAlign: 'center'}}>Ant Design ©2018 Created by Ant UED</Footer>
+            <Footer style={{textAlign: 'center'}}>用友网络 ©2018 Created by yonyou</Footer>
           </Layout>
         </Layout>
       </div>

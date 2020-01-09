@@ -33,7 +33,8 @@ class OperationShangpinfenlei extends React.Component {
       wrapperCol: { sm: { span: 14 }, xs: { span: 10 }, md: { span: 19 } },
     };
 
-    console.log("modalDataObjmodalDataObjmodalDataObj",modalDataObj)
+    console.log("modalDataObj",modalDataObj);
+
 
     return (
       <Spin spinning={loading}>
@@ -62,7 +63,7 @@ class OperationShangpinfenlei extends React.Component {
                   formItemLayout={formItemLayout}
                   id="mingcheng"
                   label="名称"
-                  // defValue={modalDataObj.mingcheng}
+                  defValue={modalDataObj.mingcheng}
                   disabled={true}
                 />
 
@@ -74,7 +75,32 @@ class OperationShangpinfenlei extends React.Component {
                   formItemLayout={formItemLayout}
                   id="bianhao"
                   label="编号"
-                  // defValue={modalDataObj.bianhao}
+                  defValue={modalDataObj.bianhao}
+                  disabled={true}
+                />
+
+              </Col>
+
+              <Col xs={24} sm={24} md={12}>
+                <ConInput
+                  form={form}
+                  formItemLayout={formItemLayout}
+                  id="creatorname"
+                  label="创建者"
+                  defValue={modalDataObj.creatorname}
+                  disabled={true}
+                />
+
+              </Col>
+
+
+              <Col xs={24} sm={24} md={12}>
+                <ConInput
+                  form={form}
+                  formItemLayout={formItemLayout}
+                  id="createtime"
+                  label="创建时间"
+                  defValue={modalDataObj.createtime}
                   disabled={true}
                 />
 

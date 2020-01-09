@@ -147,7 +147,7 @@ class Attchment extends React.Component {
         this.setState({ confirmLoading: false });
         if (checkError(value)) {
           this.hideModal();
-          this.getAttchmentData();
+          this.getAttchmentData({pid: this.props.pid});
         }
       },
     });
@@ -157,10 +157,6 @@ class Attchment extends React.Component {
   // 获取数据
   getAttchmentData = (payload = {}) => {
     this.setState({ loading: true });
-
-    if (!payload.pid) {
-      payload.pid = this.props.pid;
-    }
 
     this.props.dispatch({
       type: 'commonModel/getAttchment',
@@ -180,7 +176,7 @@ class Attchment extends React.Component {
       payload: delMore(payload),
       callback: (value) => {
         if (checkError(value)) {
-          this.getAttchmentData();
+          this.getAttchmentData({pid: this.props.pid});
         }
       },
     });
@@ -291,8 +287,6 @@ class Attchment extends React.Component {
                     label="文件"
                     updatePicture={(filepath, info) => {
                       const { name, size } = info;
-                      console.log("converFileSize(size)",converFileSize(size))
-
                       this.props.form.setFieldsValue({
                         leixing: name.split('.')[1],
                         filename: name.split('.')[0],

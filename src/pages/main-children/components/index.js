@@ -270,7 +270,6 @@ class OperationZhuanjia extends React.Component {
   render() {
     const { loading, visible, status, modalDataObj, rowId } = this.state;
 
-    console.log("his.props.operationZhuanjiaModel",this.props.operationZhuanjiaModel)
 
     const { zhuanjiaData } = this.props.operationZhuanjiaModel;
     const { pageIndex, total, pageSize, rows } = zhuanjiaData;
@@ -278,11 +277,9 @@ class OperationZhuanjia extends React.Component {
     const textObj = ['已驳回', '未提交'];
     const actionState = textObj.includes(modalDataObj.state) ? false : true;
 
-
     return (
       <div>
-        <Spin spinning={false}>
-
+        <Spin spinning={loading}>
           <Search
             onSearch={this.onSearchPannel}
             // 设置ref属性
