@@ -1,5 +1,9 @@
-import {Table, Input, InputNumber, Popconfirm, Form} from 'antd';
-import ConInput from "../ConInput";
+import {Table, Input, InputNumber, Popconfirm, Form, Divider, Icon, Tooltip} from 'antd';
+
+import ConInput from 'components/ConInput';
+import ConInputNumber from 'components/ConInputNumber';
+
+import React from "react";
 
 const data = [];
 for (let i = 0; i < 100; i++) {
@@ -14,41 +18,52 @@ const EditableContext = React.createContext();
 
 class EditableCell extends React.Component {
 
-  getInput = () => {
-    if (this.props.inputType === 'number') {
-      return <InputNumber/>;
-    }
-    return <Input/>;
-  };
-
-  renderCell = ({getFieldDecorator}) => {
+  renderCell = (form) => {
     const {
       editing,
       dataIndex,
       title,
-      inputType,
+      inputType = 'Input',
       record,
       index,
       children,
+      message,
+      required,
+      placeholder,
       ...restProps
     } = this.props;
+
+    let componentObj = null;
+    if (editing) {
+      componentObj = {
+        'Input': (
+          <ConInput
+            form={form}
+            id={dataIndex}
+            defValue={record[dataIndex]}
+            required={required}
+            message={message}
+            formItemStyle={{margin: 0, paddingBottom: 10, paddingTop: 10}}
+            placeholder={placeholder}
+          />),
+        'InputNumber': (
+          <ConInputNumber
+            form={form}
+            id={dataIndex}
+            defValue={record[dataIndex]}
+            required={required}
+            message={message}
+            formItemStyle={{margin: 0, paddingBottom: 10, paddingTop: 10}}
+            placeholder={placeholder}
+          />),
+
+      }
+    }
+
+
     return (
       <td {...restProps}>
-        {editing ? (
-          <Form.Item style={{margin: 0}}>
-            {getFieldDecorator(dataIndex, {
-              rules: [
-                {
-                  required: true,
-                  message: `Please Input ${title}!`,
-                },
-              ],
-              initialValue: record[dataIndex],
-            })(this.getInput())}
-          </Form.Item>
-        ) : (
-          children
-        )}
+        {editing ? componentObj[inputType] : children}
       </td>
     );
   };
@@ -68,19 +83,31 @@ class EditableTable extends React.Component {
         title: '姓名',
         dataIndex: 'name',
         width: '25%',
+        inputType: 'Input',
         editable: true,
+        message: '请输入姓名',
+        placeholder: '请输入姓名',
+        required: true,
       },
       {
         title: '年龄',
         dataIndex: 'age',
         width: '15%',
         editable: true,
+        message: '请输入年龄',
+        inputType: 'InputNumber',
+        placeholder: '请输入年龄',
+        required: true,
+
       },
       {
         title: '地址',
         dataIndex: 'address',
         width: '40%',
         editable: true,
+        message: '请输入地址',
+        placeholder: '请输入地址',
+        required: false,
       },
       {
         title: '操作',
@@ -92,22 +119,25 @@ class EditableTable extends React.Component {
             <span>
               <EditableContext.Consumer>
                 {form => (
-                  <a
-                    onClick={() => this.save(form, record.key)}
-                    style={{marginRight: 8}}
-                  >
-                    保存
-                  </a>
+                  <a onClick={() => this.save(form, record.key)}>保存</a>
                 )}
               </EditableContext.Consumer>
-              <Popconfirm title="确定取消吗?" onConfirm={() => this.cancel(record.key)}>
+               <Divider type="vertical"/>
+              <Popconfirm
+                title="确定取消吗?"
+                okText="确定"
+                cancelText="取消"
+                onConfirm={() => this.cancel(record.key)}
+              >
                 <a>取消</a>
               </Popconfirm>
             </span>
           ) : (
-            <a disabled={editingKey !== ''} onClick={() => this.edit(record.key)}>
-              编辑
-            </a>
+            <span>
+            <a disabled={editingKey !== ''} onClick={() => this.edit(record.key)}>编辑</a>
+            <Divider type="vertical"/>
+            <a onClick={() => this.edit(record.key)}>查看</a>
+            </span>
           );
         },
       },
@@ -159,10 +189,8 @@ class EditableTable extends React.Component {
       return {
         ...col,
         onCell: record => ({
+          ...col,
           record,
-          inputType: col.dataIndex === 'age' ? 'number' : 'text',
-          dataIndex: col.dataIndex,
-          title: col.title,
           editing: this.isEditing(record),
         }),
       };

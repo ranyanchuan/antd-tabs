@@ -2,22 +2,36 @@
  * Created by ranyanchuan on 2018/3/11.
  */
 import React from 'react';
-import { Form, InputNumber } from 'antd';
+import {Form, InputNumber} from 'antd';
 
 @Form.create()
 
 class ConInputNumber extends React.Component {
   render() {
-    const { formItemLayout, defValue, disabled, form, required = false, label, id, message, placeholder, min, max } = this.props;
-    const { getFieldDecorator } = form;
+    const {
+      formItemLayout,
+      defValue,
+      disabled,
+      form,
+      required = false,
+      label,
+      id,
+      message,
+      placeholder,
+      min,
+      max,
+      formItemStyle,
+    } = this.props;
+    const {getFieldDecorator} = form;
     return (
       <div>
         <Form.Item
           {...formItemLayout}
           label={label}
+          style={formItemStyle}
         >
           {getFieldDecorator(id, {
-            rules: [{ required, message }],
+            rules: [{required, message}],
             initialValue: defValue,
           })(
             <InputNumber
@@ -25,7 +39,7 @@ class ConInputNumber extends React.Component {
               disabled={disabled}
               min={min}
               max={max}
-              style={{ width: '100%' }}
+              style={{width: '100%'}}
             />,
           )}
         </Form.Item>

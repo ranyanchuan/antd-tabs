@@ -133,5 +133,12 @@ body {
 }
 .ant-tabs-nav-container{
   box-shadow: 0 2px 8px #f0f1f2;
+}
 
+/*表格行编辑*/
+.ant-form-explain{
+  position: absolute;
+}
+.ant-table-row-cell-break-word .ant-form-item .ant-col-sm-18{
+  width: 100%;
 }

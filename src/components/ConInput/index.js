@@ -22,6 +22,7 @@ class ConInput extends React.Component {
       id,
       message,
       placeholder,
+      formItemStyle,
     } = this.props;
     const { getFieldDecorator } = form;
     return (
@@ -29,6 +30,7 @@ class ConInput extends React.Component {
         <Form.Item
           {...formItemLayout}
           label={label}
+          style={formItemStyle}
         >
           {getFieldDecorator(id, {
             rules: [{ required, message }],
