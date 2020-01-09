@@ -2,12 +2,10 @@ import React from 'react';
 import {connect} from 'dva';
 import router from 'umi/router';
 import queryString from 'query-string';
-
 import {Layout, Menu, Tabs, Icon, Badge, Dropdown, Avatar} from 'antd';
 import {tree2Map} from 'utils';
 
 import styles from './index.less';
-
 
 const {Header, Content, Footer, Sider} = Layout;
 const {SubMenu} = Menu;
@@ -311,9 +309,8 @@ class BasicLayout extends React.Component {
               </div>
             </Header>
 
-
+            {/*内容*/}
             <Content style={{margin: '0 16px'}}>
-
               <Tabs
                 hideAdd
                 onChange={this.onChangeTab}
@@ -322,7 +319,7 @@ class BasicLayout extends React.Component {
                 onEdit={this.onEdit}
                 // style={{height:38}}
                 className={styles.tabPage}
-                size="small"
+                // size="small"
               >
                 {panes && this.getTabPane(panes)}
               </Tabs>
