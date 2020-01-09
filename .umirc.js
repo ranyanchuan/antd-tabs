@@ -18,6 +18,7 @@ export default {
         {path: '/pie-chart', component: './pie-chart/components/'},
         {path: '/bar-chart', component: './bar-chart/components/'},
         {path: '/radar-chart', component: './radar-chart/components/'},
+        {path: '/scatter-chart', component: './scatter-chart/components/'},
         {path: '/single-table', component: './single-table/components/'},
         {path: '/main-children', component: './main-children/components/'},
         {path: '/tree-card', component: './tree-card/components/'},

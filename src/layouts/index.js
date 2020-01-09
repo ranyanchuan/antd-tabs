@@ -39,6 +39,11 @@ const menuInitArray = [
         code: 'radar-chart',
         title: '雷达图',
         icon: 'radar-chart',
+      },
+      {
+        code: 'scatter-chart',
+        title: '散点图',
+        icon: 'dot-chart',
       }
     ],
   },
@@ -145,16 +150,16 @@ class BasicLayout extends React.Component {
 
 
   remove = targetKey => {
-    let { panes} = this.state;
+    let {panes} = this.state;
     if (targetKey !== 'index') {
       let proCode = 'index';
       let isFound = false;
 
       for (let index in panes) {
         const {code} = panes[index];
-        if(isFound){
-          proCode=code;
-          isFound=false;
+        if (isFound) {
+          proCode = code;
+          isFound = false;
           break;
         }
         if (code === targetKey) {
@@ -233,7 +238,6 @@ class BasicLayout extends React.Component {
         </Menu.Item>
       </Menu>
     );
-
 
     return (
 
