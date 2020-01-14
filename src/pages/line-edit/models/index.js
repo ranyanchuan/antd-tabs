@@ -3,13 +3,13 @@ import * as services from '../services';
 import {lineEdit} from 'utils/mockData';
 
 export default {
-  namespace: 'productAdModel',
+  namespace: 'lineEditModel',
 
   state: {
 
-    adData: {
+    mainData: {
       rows: [],
-      pageNumber: 0,
+      pageIndex: 0,
       total: 0,
       pageSize: 20,
 
@@ -31,11 +31,12 @@ export default {
   effects: {
 
     //  分页查询
-    * getAd({payload, callback}, {call, put, select}) {
+    * getData({payload, callback}, {call, put, select}) {
+
       // const {data} = yield call(services.getAd, payload);
       let data = lineEdit;
       if (data) {
-        yield put({type: 'updateState', res: {adData: data}});
+        yield put({type: 'updateState', res: {mainData: data}});
       }
       if (callback) {
         callback(data);

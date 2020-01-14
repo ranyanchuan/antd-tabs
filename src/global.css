@@ -139,6 +139,6 @@ body {
 .ant-form-explain{
   position: absolute;
 }
-.ant-table-row-cell-break-word .ant-form-item .ant-col-sm-18{
-  width: 100%;
+.ant-row,.ant-form-item .ant-col,.ant-form-item-control-wrapper,.ant-col-sm-18{
+  /*width: 100%;*/
 }

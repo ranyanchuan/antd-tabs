@@ -2,9 +2,9 @@
  * Created by ranyanchuan on 2018/3/11.
  */
 import React from 'react';
-import { Form, Select, Spin } from 'antd';
-import { request } from 'utils/request';
-import { formData, uuid } from 'utils/index';
+import {Form, Select, Spin} from 'antd';
+import {request} from 'utils/request';
+import {formData, uuid} from 'utils/index';
 
 const Option = Select.Option;
 
@@ -14,50 +14,63 @@ class ConSelectPromise extends React.Component {
 
   state = {
     defValue: '',
-    defId: '',
-    defObj: {},
     loading: false,
     tableData: [],
   };
 
   async componentDidMount() {
-    const { defValue, defId, onRef, payload } = this.props;
-    this.setState({ defValue, defId });
+    const {defValue, onRef, payload} = this.props;
+    this.setState({defValue});
     if (onRef) {
       this.props.onRef(this);
     }
-    let { data } = await this.tableService(payload);
-    let tableData = [];
+    // let {data} = await this.tableService(payload);
+    // let tableData = [];
+    let tableData = [
+      {id: '1', title: '111111'},
+      {id: '2', title: '222222'},
+      {id: '3', title: '333333'},
+      {id: '4', title: '444444'},
+      {id: '5', title: '555555'},
+    ];
     // 兼容接口
-    if (data) {
-      tableData = Array.isArray(data) ? data : data.rows;
-    }
-    this.setState({ tableData });
+    // if (data) {
+    //   tableData = Array.isArray(data) ? data : data.rows;
+    // }
+    this.setState({tableData});
   }
 
 
   async componentWillReceiveProps(nextProps) {
-    const { defValue, defId, isLoadingData, payload, form, id } = nextProps;
+    const {defValue, isLoadingData, payload, form, id} = nextProps;
     if (isLoadingData && payload && (JSON.stringify(payload) !== JSON.stringify(this.props.payload))) {
-      let { data } = await this.tableService(payload);
+      let {data} = await this.tableService(payload);
       // 兼容接口
-      let tableData = Array.isArray(data) ? data : data.rows;
-      this.setState({ tableData });
+      // let tableData = Array.isArray(data) ? data : data.rows;
+      let tableData = [
+        {id: '1', title: '111111'},
+        {id: '2', title: '222222'},
+        {id: '3', title: '333333'},
+        {id: '4', title: '444444'},
+        {id: '5', title: '555555'},
+      ];
+      this.setState({tableData});
     }
-    if (defId && defId !== this.props.defId) { // 参照级联
-      this.setState({ defValue, defId });
-      form.setFieldsValue({ [id]: defValue });
+    if (defValue && defValue !== this.props.defValue) { // 参照级联
+      this.setState({defValue});
+      form.setFieldsValue({[id]: defValue.split(',')});
     }
   }
 
 
   // 获取
   tableService = (payload = {}) => {
-    const { url } = this.props;
+    const {url} = this.props;
     return request(url, {
       method: 'POST',
       body: formData(payload),
     });
+
   };
 
 
@@ -81,13 +94,20 @@ class ConSelectPromise extends React.Component {
     } = this.props;
 
     if (isSearchBe) {
-      this.setState({ loading: true });
-      let { data } = await this.tableService({ ...payload, [optionTitle]: value });
+      this.setState({loading: true});
+      let {data} = await this.tableService({...payload, [optionTitle]: value});
       let tableData = [];
       if (data) {
-        tableData = Array.isArray(data) ? data : data.rows;       // 兼容接口
+        // tableData = Array.isArray(data) ? data : data.rows;       // 兼容接口
+        tableData = [
+          {id: '1', title: '111111'},
+          {id: '2', title: '222222'},
+          {id: '3', title: '333333'},
+          {id: '4', title: '444444'},
+          {id: '5', title: '555555'},
+        ];
       }
-      this.setState({ tableData, loading: false });
+      this.setState({tableData, loading: false});
     }
   };
 
@@ -97,17 +117,17 @@ class ConSelectPromise extends React.Component {
   };
 
   onChangeTable = (keys, nodes) => {
-    this.setState({ defId: keys.toString() });
+    this.setState({defValue: keys.toString()});
   };
 
   getTreeSelect = () => {
-    return this.state.defId;
+    return this.state.defValue;
   };
 
   onSelectTable = (selectedKeys, param) => {
-    const { onSelect } = this.props;
+    const {onSelect} = this.props;
     if (param.props && onSelect) {
-      const { dataRef } = param.props;
+      const {dataRef} = param.props;
       this.props.onSelect(dataRef);
     }
   };
@@ -115,11 +135,11 @@ class ConSelectPromise extends React.Component {
 
   render() {
 
-    const { loading, tableData } = this.state;
+    const {loading, tableData} = this.state;
     const {
       formItemLayout = {
-        labelCol: { sm: { span: 6 } },
-        wrapperCol: { sm: { span: 18 } },
+        labelCol: {sm: {span: 6}},
+        wrapperCol: {sm: {span: 18}},
       },
       defValue,
       disabled,
@@ -131,13 +151,14 @@ class ConSelectPromise extends React.Component {
       placeholder,
       mode,
       optionId = 'id',
-      optionTitle = 'value',
-      optionCode,
+      optionTitle = 'title',
       allowClear = true,
       showSearch = true,
       filterOption = false,
+      formItemStyle,
+      formItemClass,
     } = this.props;
-    const { getFieldDecorator } = form;
+    const {getFieldDecorator} = form;
 
     return (
 
@@ -145,10 +166,12 @@ class ConSelectPromise extends React.Component {
         <Form.Item
           {...formItemLayout}
           label={label}
+          style={formItemStyle}
+          className={formItemClass}
         >
           {getFieldDecorator(id, {
-            rules: [{ required, message }],
-            initialValue: defValue,
+            rules: [{required, message}],
+            initialValue: defValue ? defValue.split(',') : [],
           })(
             <Select placeholder={placeholder}
                     disabled={disabled}
@@ -160,11 +183,10 @@ class ConSelectPromise extends React.Component {
                     onChange={this.onChangeTable}
                     onSelect={this.onSelectTable}
                     notFoundContent={loading ? <Spin size="small"/> : null}
-                    style={{ width: '100%' }}
+                    style={{width: '100%'}}
             >
               {tableData && tableData.map(item => {
-                  const title = `${item[optionTitle]}(${item[optionCode]})`;
-                  return <Option key={item.id} value={item[optionId]} dataRef={item}>{title}</Option>;
+                  return <Option key={item.id} value={item[optionId]} dataRef={item}>{item[optionTitle]}</Option>;
                 },
               )}
             </Select>,

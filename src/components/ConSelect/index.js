@@ -30,6 +30,8 @@ class ConSelect extends React.Component {
       optionKey = 'id',
       optionValue = 'value',
       allowClear=true,
+      formItemStyle,
+      formItemClass,
     } = this.props;
     const { getFieldDecorator } = form;
 
@@ -49,6 +51,8 @@ class ConSelect extends React.Component {
         <Form.Item
           {...formItemLayout}
           label={label}
+          style={formItemStyle}
+          className={formItemClass}
         >
           {getFieldDecorator(id, {
             rules: [{ required, message }],

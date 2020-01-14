@@ -16,7 +16,7 @@ const confirm = Modal.confirm;
 
 
 @connect((state) => ({
-  productAdModel: state.productAdModel,
+  lineEditModel: state.lineEditModel,
 }))
 
 class ProductAd extends React.Component {
@@ -29,14 +29,14 @@ class ProductAd extends React.Component {
   };
 
   componentDidMount() {
-    this.getAdData();
+    this.getData();
   }
 
   // 获取数据
-  getAdData = (payload) => {
+  getData = (payload) => {
     this.setState({loading: true});
     this.props.dispatch({
-      type: 'productAdModel/getAd',
+      type: 'lineEditModel/getData',
       payload,
       callback: (data) => {
         let stateTemp = {loading: false};
@@ -45,38 +45,37 @@ class ProductAd extends React.Component {
     });
   };
 
-
-  // 删除表格数据
-  delAdData = (payload) => {
-    this.setState({loading: true});
-    this.props.dispatch({
-      type: 'productAdModel/delAd',
-      payload,
-      callback: (value) => {
-        this.setState({loading: false});
-        if (checkError(value)) {
-          this.getAdData();
-        }
-      },
-    });
-  };
-
-  //添加表格数据
-  addAdData = (payload, callback) => {
-    const {status, modalDataObj} = this.state;
-    this.props.dispatch({
-      type: 'productAdModel/addAd',
-      payload: checkEdit(status, modalDataObj, payload),
-      callback: (value) => {
-        let success = false;
-        if (checkError(value)) {
-          this.getAdData();
-          success = true;
-        }
-        callback(success);
-      },
-    });
-  };
+  // // 删除表格数据
+  // delAdData = (payload) => {
+  //   this.setState({loading: true});
+  //   this.props.dispatch({
+  //     type: 'lineEditModel/delAd',
+  //     payload,
+  //     callback: (value) => {
+  //       this.setState({loading: false});
+  //       if (checkError(value)) {
+  //         this.getAdData();
+  //       }
+  //     },
+  //   });
+  // };
+  //
+  // //添加表格数据
+  // addAdData = (payload, callback) => {
+  //   const {status, modalDataObj} = this.state;
+  //   this.props.dispatch({
+  //     type: 'lineEditModel/addAd',
+  //     payload: checkEdit(status, modalDataObj, payload),
+  //     callback: (value) => {
+  //       let success = false;
+  //       if (checkError(value)) {
+  //         this.getAdData();
+  //         success = true;
+  //       }
+  //       callback(success);
+  //     },
+  //   });
+  // };
 
 
   // 搜索面板值
@@ -90,11 +89,11 @@ class ProductAd extends React.Component {
   };
 
   // 修改分页
-  onChangePage = (data) => {
-    const searchObj = this.child.getSearchValue();
-    // 获取分页数据
-    this.getAdData({...getPageParam(data), ...searchObj});
-  };
+  // onChangePage = (data) => {
+  //   const searchObj = this.child.getSearchValue();
+  //   // 获取分页数据
+  //   this.getAdData({...getPageParam(data), ...searchObj});
+  // };
 
   // 删除弹框确认
   showDelCon = (payload) => {
@@ -129,33 +128,66 @@ class ProductAd extends React.Component {
       title: '文本',
       dataIndex: 'input',
       key: 'input',
+      editable: true,
+      message: '请输入文本',
+      inputType: 'Input',
+      placeholder: '请输入文本',
+      required: true,
     },
 
     {
       title: '下拉',
       dataIndex: 'select',
       key: 'select',
+      message: '请选择下拉',
+      placeholder: '请选择下拉',
+      editable: true,
+      required: true,
+      inputType:'Select',
+      selectData:['select1','select2'],
+
     },
     {
       title: '日期',
       dataIndex: 'date',
       key: 'date',
+      message: '请选择日期',
+      placeholder: '请选择日期',
+      editable: true,
+      required: true,
+      inputType:'Date',
       render: text => string2Moment(text),
     },
     {
       title: '数字',
       dataIndex: 'number',
       key: 'number',
+      message: '请输入数字',
+      placeholder: '请输入数字',
+      editable: true,
+      inputType: 'InputNumber',
+      required: true,
     },
     {
       title: '参照',
       dataIndex: 'canzao',
       key: 'canzao',
+      message: '请输入数字',
+      placeholder: '请输入数字',
+      editable: true,
+      inputType: 'ConSelectPromise',
+      required: true,
     },
     {
       title: '多文本',
       dataIndex: 'textarea',
       key: 'textarea',
+      message: '请输入多文本',
+      placeholder: '请输入多文本',
+      editable: true,
+      required: true,
+      inputType:'TextArea',
+      textAreaHeight:30,
       render: (text) => {
         return <ConTablePopover text={text} width={250}/>;
       },
@@ -186,8 +218,10 @@ class ProductAd extends React.Component {
   render() {
 
     const {status, loading, visible, modalDataObj} = this.state;
-    const {adData} = this.props.productAdModel;
-    const {pageIndex, total, pageSize, rows} = adData;
+    const {mainData} = this.props.lineEditModel;
+
+    // const {pageIndex, total, pageSize, rows} = adData;
+    console.log("mainDatamainData",mainData)
 
     return (
 
@@ -200,11 +234,15 @@ class ProductAd extends React.Component {
             }}
           />
           <div className="table-operations">
-            <Button onClick={this.onShowModal.bind(this, 'add')}>编辑</Button>
+            <Button onClick={this.onShowModal.bind(this, 'add')}>添加</Button>
             <Button onClick={this.onShowModal.bind(this, 'add')}>删除</Button>
           </div>
 
-          <ConEditTable/>
+          <ConEditTable
+            columns={this.columns}
+            dataSource={mainData.rows}
+            rowKey="id"
+          />
         </Spin>
       </div>
     );

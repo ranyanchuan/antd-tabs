@@ -19,10 +19,12 @@ class ConTextArea extends React.Component {
       form,
       required = false,
       height=210,
-      label='摘要',
+      label='',
       id="abstract",
       message,
-      placeholder
+      placeholder,
+      formItemStyle,
+      formItemClass,
     } = this.props;
     const { getFieldDecorator } = form;
     return (
@@ -30,6 +32,8 @@ class ConTextArea extends React.Component {
         <Form.Item
           {...formItemLayout}
           label={label}
+          style={formItemStyle}
+          className={formItemClass}
         >
           {getFieldDecorator(id, {
             rules: [{ required, message }],

@@ -21,6 +21,7 @@ class ConInputNumber extends React.Component {
       min,
       max,
       formItemStyle,
+      formItemClass,
     } = this.props;
     const {getFieldDecorator} = form;
     return (
@@ -29,6 +30,7 @@ class ConInputNumber extends React.Component {
           {...formItemLayout}
           label={label}
           style={formItemStyle}
+          className={formItemClass}
         >
           {getFieldDecorator(id, {
             rules: [{required, message}],

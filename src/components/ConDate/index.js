@@ -2,7 +2,7 @@
  * Created by ranyanchuan on 2018/3/11.
  */
 import React from 'react';
-import { DatePicker, Form } from 'antd';
+import {DatePicker, Form} from 'antd';
 import moment from 'moment';
 
 import styles from './index.less';
@@ -12,19 +12,33 @@ import styles from './index.less';
 class ConDate extends React.Component {
 
   render() {
-    const { formItemLayout, defValue, disabled, form, required = false, label = '日期', id = 'date', message = '请选择日期', placeholder = '请选择日期' } = this.props;
-    const { getFieldDecorator } = form;
+    const {
+      formItemLayout,
+      defValue,
+      disabled,
+      form,
+      required = false,
+      label = '',
+      id = 'date',
+      message = '请选择日期',
+      placeholder = '请选择日期',
+      formItemStyle,
+      formItemClass,
+    } = this.props;
+    const {getFieldDecorator} = form;
     return (
       <div>
         <Form.Item
           {...formItemLayout}
           label={label}
+          style={formItemStyle}
+          className={formItemClass}
         >
           {getFieldDecorator(id, {
             initialValue: defValue ? moment(defValue) : null,
-            rules: [{ required, message }],
+            rules: [{required, message}],
           })(
-            <DatePicker disabled={disabled} style={{ width: '100%' }} placeholder={placeholder}/>,
+            <DatePicker disabled={disabled} style={{width: '100%'}} placeholder={placeholder}/>,
           )}
         </Form.Item>
       </div>
