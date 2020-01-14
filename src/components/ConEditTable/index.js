@@ -6,9 +6,11 @@ import ConDate from 'components/ConDate';
 import ConTextArea from 'components/ConTextArea';
 import ConInputNumber from 'components/ConInputNumber';
 import ConSelectPromise from 'components/ConSelectPromise';
+import {formatFormDate} from 'utils';
 
 import styles from './index.less';
 
+let formatRule = 'YYYY-MM-DD HH:mm:ss';
 
 const EditableContext = React.createContext();
 
@@ -23,85 +25,66 @@ class EditableCell extends React.Component {
       record,
       index,
       children,
-      message,
-      required,
       placeholder,
-      selectData = [], // 下拉选项
-      textAreaHeight = 30, // 文本编辑默认高
+      conAttr = {}, // 参照属性
       ...restProps
     } = this.props;
+
 
     let componentObj = null;
     if (editing) {
       componentObj = {
         'Input': (
           <ConInput
+            {...conAttr}
             form={form}
             id={dataIndex}
             defValue={record[dataIndex]}
-            required={required}
-            message={message}
-            // formItemStyle={{margin: 0, paddingBottom: 10, paddingTop: 10}}
             formItemClass={styles.editFromCon}
             placeholder={placeholder}
           />),
         'InputNumber': (
           <ConInputNumber
+            {...conAttr}
             form={form}
             id={dataIndex}
             defValue={record[dataIndex]}
-            required={required}
-            message={message}
             formItemClass={styles.editFromCon}
-            placeholder={placeholder}
           />),
         "Select": (
           <ConSelect
+            {...conAttr}
             form={form}
             id={dataIndex}
             defValue={record[dataIndex]}
-            required={required}
-            message={message}
             formItemClass={styles.editFromCon}
-            placeholder={placeholder}
-            data={selectData}
           />
         ),
         "Date": (
           <ConDate
+            {...conAttr}
             form={form}
             id={dataIndex}
             defValue={record[dataIndex]}
-            required={required}
-            message={message}
             formItemClass={styles.editFromCon}
-            placeholder={placeholder}
           />
         ),
         "TextArea": (
           <ConTextArea
+            {...conAttr}
             form={form}
             id={dataIndex}
             defValue={record[dataIndex]}
-            required={required}
-            message={message}
             formItemClass={styles.editFromCon}
-            placeholder={placeholder}
-            height={textAreaHeight}
           />
         ),
         "ConSelectPromise": (
           <ConSelectPromise
-            mode="multiple"
+            {...conAttr}
             form={form}
-            // optionId='id'
-            // optionTitle='title'
             isLoadingData={true}
             id={dataIndex}
             defValue={record[dataIndex]}
-            url={`/admin/role/queryRoleTreeForGrant`}
-            required={required}
-            message={message}
             formItemClass={styles.editFromCon}
           />
         ),
@@ -124,7 +107,6 @@ class EditableCell extends React.Component {
 
 class EditableTable extends React.Component {
 
-
   constructor(props) {
     super(props);
     this.state = {
@@ -132,7 +114,6 @@ class EditableTable extends React.Component {
       editingKey: ''
     };
   }
-
 
   componentDidMount() {
     const {dataSource} = this.props;
@@ -156,6 +137,7 @@ class EditableTable extends React.Component {
 
       const {editingKey} = this.state;
       const editable = this.isEditing(record);
+
 
       return editable ? (
         <span>
@@ -196,28 +178,44 @@ class EditableTable extends React.Component {
 
   save(form, key) {
 
-    const {rowKey = 'id'} = this.props;
+    const {rowKey = 'id', columns, onSave} = this.props;
 
     form.validateFields((error, row) => {
       if (error) {
         return;
       }
+
+      let newRow = {...row};
+      //  参照和日期处理
+      for (let col of columns) {
+        const {dataIndex, inputType} = col;
+        if (['ConSelectPromise'].includes(inputType)) { // 参照处理
+          newRow[dataIndex] = row[dataIndex].toString();
+        }
+
+        if (['Date'].includes(inputType)) { // 日期
+          newRow[dataIndex] = row[dataIndex] ? row[dataIndex].format(formatRule) : '';
+        }
+      }
+
       const newData = [...this.state.data];
       const index = newData.findIndex(item => key === item[rowKey]);
       if (index > -1) {
         const item = newData[index];
         newData.splice(index, 1, {
           ...item,
-          ...row,
+          ...newRow,
         });
         this.setState({data: newData, editingKey: ''});
       } else {
-        newData.push(row);
+        newData.push(newRow);
         this.setState({data: newData, editingKey: ''});
       }
 
       // todo 走后端 api
-      console.log("newDatanewData", newData[index]);
+      if (onSave) {
+        onSave(newData[index]);
+      }
 
     });
   }

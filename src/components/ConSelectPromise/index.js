@@ -95,18 +95,18 @@ class ConSelectPromise extends React.Component {
 
     if (isSearchBe) {
       this.setState({loading: true});
-      let {data} = await this.tableService({...payload, [optionTitle]: value});
-      let tableData = [];
-      if (data) {
+      // let {data} = await this.tableService({...payload, [optionTitle]: value});
+      // let tableData = [];
+      // if (data) {
         // tableData = Array.isArray(data) ? data : data.rows;       // 兼容接口
-        tableData = [
-          {id: '1', title: '111111'},
-          {id: '2', title: '222222'},
+      let  tableData = [
+          // {id: '1', title: '111111'},
+          // {id: '2', title: '222222'},
           {id: '3', title: '333333'},
           {id: '4', title: '444444'},
           {id: '5', title: '555555'},
         ];
-      }
+      // }
       this.setState({tableData, loading: false});
     }
   };

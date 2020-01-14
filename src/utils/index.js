@@ -136,3 +136,40 @@ export function connectTree(source, data, pid) {
   return source;
 }
 
+
+/**
+ * 表单日期格式化
+ * @param fieldArray 待格式化的字段数组
+ * @param formData 表单数据
+ * @param formatRule 格式化规则
+ */
+export function formatFormDate(formData, fieldArray, formatRule = 'YYYY-MM-DD HH:mm:ss') {
+
+  if (!Array.isArray(fieldArray)) {
+    return formData;
+  }
+
+  for (const field of fieldArray) {
+    if (formData[field]) {
+      formData[field] = formData[field].format(formatRule);
+    }
+  }
+  return formData;
+}
+
+
+export function formatFormDateRange(formData, fieldArray, formatRule = 'YYYY-MM-DD HH:mm:ss') {
+
+  if (!Array.isArray(fieldArray)) {
+    return formData;
+  }
+
+  for (const field of fieldArray) {
+    if (formData[field]) {
+      formData[field] = formData[field].map((item) => {
+        return item.format(formatRule);
+      }).toString();
+    }
+  }
+  return formData;
+}

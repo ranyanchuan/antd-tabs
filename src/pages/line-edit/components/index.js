@@ -7,6 +7,7 @@ import {checkError, checkEdit, getPageParam, string2Moment} from 'utils';
 import ConTablePopover from 'components/ConTablePopover';
 import ConTableStateAction from 'components/ConTableStateAction';
 import ConEditTable from 'components/ConEditTable';
+import ConTableTag from 'components/ConTableTag';
 
 import Search from './Search';
 // import ActionModal from './Modal';
@@ -129,65 +130,86 @@ class ProductAd extends React.Component {
       dataIndex: 'input',
       key: 'input',
       editable: true,
-      message: '请输入文本',
       inputType: 'Input',
-      placeholder: '请输入文本',
-      required: true,
+      conAttr: {
+        message: '请输入文本',
+        placeholder: '请输入文本',
+        required: true,
+      },
     },
 
     {
       title: '下拉',
       dataIndex: 'select',
       key: 'select',
-      message: '请选择下拉',
-      placeholder: '请选择下拉',
       editable: true,
-      required: true,
-      inputType:'Select',
-      selectData:['select1','select2'],
+      inputType: 'Select',
+      conAttr: {
+        message: '请选择下拉',
+        placeholder: '请选择下拉',
+        data: ['select1', 'select2'],
+        required: true,
+      },
 
     },
     {
       title: '日期',
       dataIndex: 'date',
       key: 'date',
-      message: '请选择日期',
-      placeholder: '请选择日期',
       editable: true,
-      required: true,
-      inputType:'Date',
+      inputType: 'Date',
+      conAttr: {
+        message: '请选择日期',
+        placeholder: '请选择日期',
+        required: true,
+      },
       render: text => string2Moment(text),
     },
     {
       title: '数字',
       dataIndex: 'number',
       key: 'number',
-      message: '请输入数字',
-      placeholder: '请输入数字',
       editable: true,
       inputType: 'InputNumber',
-      required: true,
+      conAttr: {
+        required: true,
+        message: '请输入数字',
+        placeholder: '请输入数字',
+      },
     },
     {
-      title: '参照',
+      title: '下拉参照',
       dataIndex: 'canzao',
       key: 'canzao',
-      message: '请输入数字',
-      placeholder: '请输入数字',
       editable: true,
       inputType: 'ConSelectPromise',
-      required: true,
+      conAttr: {  // 表单属性
+        mode: "multiple",
+        url: `/admin/role/queryRoleTreeForGrant`,
+        required: true,
+        message: '下拉参照',
+        // onSelect:(value)=>{
+        //   console.log("下拉参照valuevaluevalue",value)
+        // }
+      },
+      render: (text, record) => {
+        // return <ConTableTag data={record.canzaoname}/>
+        return record.canzaoname
+      },
     },
     {
       title: '多文本',
       dataIndex: 'textarea',
       key: 'textarea',
-      message: '请输入多文本',
-      placeholder: '请输入多文本',
       editable: true,
-      required: true,
-      inputType:'TextArea',
-      textAreaHeight:30,
+      inputType: 'TextArea',
+      conAttr: {
+        required: true,
+        message: '请输入多文本',
+        placeholder: '请输入多文本',
+        height: 32,
+      },
+
       render: (text) => {
         return <ConTablePopover text={text} width={250}/>;
       },
@@ -221,7 +243,7 @@ class ProductAd extends React.Component {
     const {mainData} = this.props.lineEditModel;
 
     // const {pageIndex, total, pageSize, rows} = adData;
-    console.log("mainDatamainData",mainData)
+    console.log("mainDatamainData", mainData)
 
     return (
 
@@ -242,6 +264,9 @@ class ProductAd extends React.Component {
             columns={this.columns}
             dataSource={mainData.rows}
             rowKey="id"
+            onSave={(data) => {
+              console.log("data", data);
+            }}
           />
         </Spin>
       </div>
