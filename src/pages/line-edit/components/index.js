@@ -166,6 +166,20 @@ class ProductAd extends React.Component {
       render: text => string2Moment(text),
     },
     {
+      title: '时间',
+      dataIndex: 'time',
+      key: 'time',
+      editable: true,
+      inputType: 'TimePicker',
+      conAttr: {
+        message: '请选择时间',
+        placeholder: '请选择时间',
+        required: true,
+        ruleTime:'HH:mm:ss',
+      },
+      // render: text => string2Moment(text),
+    },
+    {
       title: '数字',
       dataIndex: 'number',
       key: 'number',

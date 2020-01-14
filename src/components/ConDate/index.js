@@ -13,7 +13,10 @@ class ConDate extends React.Component {
 
   render() {
     const {
-      formItemLayout,
+        formItemLayout = {
+          labelCol: { sm: { span: 6 } },
+          wrapperCol: { sm: { span: 18 } },
+        },
       defValue,
       disabled,
       form,

@@ -3,6 +3,7 @@ import {Table, Input, InputNumber, Popconfirm, Form, Divider, Icon, Tooltip} fro
 import ConInput from 'components/ConInput';
 import ConSelect from 'components/ConSelect';
 import ConDate from 'components/ConDate';
+import ConTime from 'components/ConTime';
 import ConTextArea from 'components/ConTextArea';
 import ConInputNumber from 'components/ConInputNumber';
 import ConSelectPromise from 'components/ConSelectPromise';
@@ -11,6 +12,7 @@ import {formatFormDate} from 'utils';
 import styles from './index.less';
 
 let formatRule = 'YYYY-MM-DD HH:mm:ss';
+let timeRule = 'HH:mm:ss';
 
 const EditableContext = React.createContext();
 
@@ -62,6 +64,15 @@ class EditableCell extends React.Component {
         ),
         "Date": (
           <ConDate
+            {...conAttr}
+            form={form}
+            id={dataIndex}
+            defValue={record[dataIndex]}
+            formItemClass={styles.editFromCon}
+          />
+        ),
+        "TimePicker": (
+          <ConTime
             {...conAttr}
             form={form}
             id={dataIndex}
@@ -126,7 +137,6 @@ class EditableTable extends React.Component {
       this.setState({data: dataSource});
     }
   }
-
 
   action = {
     title: '操作',
@@ -195,6 +205,9 @@ class EditableTable extends React.Component {
 
         if (['Date'].includes(inputType)) { // 日期
           newRow[dataIndex] = row[dataIndex] ? row[dataIndex].format(formatRule) : '';
+        }
+        if (['TimePicker'].includes(inputType)) { // 时间
+          newRow[dataIndex] = row[dataIndex] ? row[dataIndex].format(timeRule) : '';
         }
       }
 
