@@ -1,5 +1,7 @@
 import React from "react";
 import {Table, Input, InputNumber, Popconfirm, Form, Divider, Icon, Tooltip} from 'antd';
+import {Resizable} from 'react-resizable';
+
 import ConInput from 'components/ConInput';
 import ConSelect from 'components/ConSelect';
 import ConDate from 'components/ConDate';
@@ -13,6 +15,27 @@ import styles from './index.less';
 
 let formatRule = 'YYYY-MM-DD HH:mm:ss';
 let timeRule = 'HH:mm:ss';
+
+// 表头拖拽
+const ResizeableTitle = props => {
+  const {onResize, width, ...restProps} = props;
+
+  if (!width) {
+    return <th {...restProps} />;
+  }
+
+  return (
+    <Resizable
+      width={width}
+      height={0}
+      onResize={onResize}
+      draggableOpts={{enableUserSelectHack: false}}
+    >
+      <th {...restProps} />
+    </Resizable>
+  );
+};
+
 
 const EditableContext = React.createContext();
 
@@ -123,6 +146,7 @@ class EditableTable extends React.Component {
     this.state = {
       data: [],
       editingKey: ''
+
     };
   }
 
@@ -237,6 +261,26 @@ class EditableTable extends React.Component {
     this.setState({editingKey: key});
   }
 
+
+  //-------表头拖拽
+  handleResize = index => (e, {size}) => {
+    this.setState(({columns}) => {
+      const nextColumns = [...columns];
+      nextColumns[index] = {
+        ...nextColumns[index],
+        width: size.width,
+      };
+      return {columns: nextColumns};
+    });
+  };
+
+  components = {
+    header: {
+      cell: ResizeableTitle,
+    },
+  };
+
+
   render() {
 
     const {data} = this.state;
@@ -244,9 +288,12 @@ class EditableTable extends React.Component {
       body: {
         cell: EditableCell,
       },
+      header: {
+        cell: ResizeableTitle,
+      },
     };
 
-    let columns = this.props.columns.map(col => {
+    let columns = this.props.columns.map((col, index) => {
       if (!col.editable) {
         return col;
       }
@@ -256,6 +303,10 @@ class EditableTable extends React.Component {
           ...col,
           record,
           editing: this.isEditing(record),
+        }),
+        onHeaderCell: column => ({
+          width: column.width || 100,
+          onResize: this.handleResize(index),
         }),
       };
     });

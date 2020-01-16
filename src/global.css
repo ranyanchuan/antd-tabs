@@ -1,5 +1,4 @@
 
-
 html, body, #root {
   height: 100%;
 }
@@ -88,7 +87,6 @@ body {
   margin-bottom: -24px;
 }
 
-
 /*左树右卡*/
 .tree-card {
   display: flex;
@@ -121,7 +119,7 @@ body {
   margin-right: 0px;
   padding: 0 16px;
   background: #fafafa;
-  border-radius:0;
+  border-radius: 0;
   border: 0;
   border-left: 1px solid #e8e8e8;
   border-bottom: 1px solid #e8e8e8;
@@ -131,14 +129,31 @@ body {
 .ant-tabs.ant-tabs-card .ant-tabs-card-bar .ant-tabs-tab:last-child {
   border-right: 1px solid #e8e8e8;
 }
-.ant-tabs-nav-container{
+
+.ant-tabs-nav-container {
   box-shadow: 0 2px 8px #f0f1f2;
 }
 
 /*表格行编辑*/
-.ant-form-explain{
+.ant-form-explain {
   position: absolute;
 }
-.ant-row,.ant-form-item .ant-col,.ant-form-item-control-wrapper,.ant-col-sm-18{
+
+.ant-row, .ant-form-item .ant-col, .ant-form-item-control-wrapper, .ant-col-sm-18 {
   /*width: 100%;*/
+}
+
+.react-resizable {
+  position: relative;
+  background-clip: padding-box;
+}
+
+.react-resizable-handle {
+  position: absolute;
+  width: 10px;
+  height: 100%;
+  bottom: 0;
+  right: -5px;
+  cursor: col-resize;
+  z-index: 1;
 }

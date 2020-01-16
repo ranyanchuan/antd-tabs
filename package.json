@@ -38,6 +38,7 @@
     "moment": "latest",
     "path": "^0.12.7",
     "query-string": "latest",
-    "react": "latest"
+    "react": "latest",
+    "react-resizable": "^1.10.1"
   }
 }

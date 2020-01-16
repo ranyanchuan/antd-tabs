@@ -7,9 +7,11 @@ import {checkError, checkEdit, getPageParam, string2Moment} from 'utils';
 import ConTablePopover from 'components/ConTablePopover';
 import ConTableStateAction from 'components/ConTableStateAction';
 import ConEditTable from 'components/ConEditTable';
+import ConTableResizable from 'components/conTableResizable';
 import ConTableTag from 'components/ConTableTag';
 
 import Search from './Search';
+import conTableResizable from "../../../components/conTableResizable";
 // import ActionModal from './Modal';
 
 
@@ -175,7 +177,7 @@ class ProductAd extends React.Component {
         message: '请选择时间',
         placeholder: '请选择时间',
         required: true,
-        ruleTime:'HH:mm:ss',
+        ruleTime: 'HH:mm:ss',
       },
       // render: text => string2Moment(text),
     },
@@ -245,6 +247,35 @@ class ProductAd extends React.Component {
   ];
 
 
+  colaaa = [
+    {
+      title: 'Date',
+      dataIndex: 'date',
+      width: 200,
+    },
+    {
+      title: 'Amount',
+      dataIndex: 'amount',
+      width: 100,
+    },
+    {
+      title: 'Type',
+      dataIndex: 'type',
+      width: 100,
+    },
+    {
+      title: 'Note',
+      dataIndex: 'note',
+      width: 100,
+    },
+    {
+      title: 'Action',
+      key: 'action',
+      render: () => <a>Delete</a>,
+    },
+  ];
+
+
   // 关闭弹框
   onClickClose = () => {
     this.setState({visible: false, status: 'add'});
@@ -257,7 +288,7 @@ class ProductAd extends React.Component {
     const {mainData} = this.props.lineEditModel;
 
     // const {pageIndex, total, pageSize, rows} = adData;
-    console.log("mainDatamainData", mainData)
+    console.log("colaaa", this.colaaa)
 
     return (
 
@@ -265,7 +296,7 @@ class ProductAd extends React.Component {
         <Spin spinning={loading}>
           <Search
             onSearch={this.onSearchPannel}
-            onRef={(ref) => {// 设置ref属性
+            onref={(ref) => {// 设置ref属性
               this.child = ref;
             }}
           />
@@ -282,6 +313,13 @@ class ProductAd extends React.Component {
               console.log("data", data);
             }}
           />
+
+          {/*<ConTableResizable*/}
+            {/*columns={this.columns}*/}
+            {/*dataSource={mainData.rows}*/}
+            {/*rowKey="id"*/}
+          {/*/>*/}
+
         </Spin>
       </div>
     );
