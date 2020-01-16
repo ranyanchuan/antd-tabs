@@ -1,5 +1,5 @@
 import React from "react";
-import {Table, Input, InputNumber, Popconfirm, Form, Divider, Icon, Tooltip} from 'antd';
+import {Table, Popconfirm, Form, Divider,} from 'antd';
 import {Resizable} from 'react-resizable';
 
 import ConInput from 'components/ConInput';
@@ -38,6 +38,7 @@ const ResizeableTitle = props => {
 
 
 const EditableContext = React.createContext();
+
 
 class EditableCell extends React.Component {
 
@@ -145,14 +146,14 @@ class EditableTable extends React.Component {
     super(props);
     this.state = {
       data: [],
-      editingKey: ''
-
+      editingKey: '',
+      columns: [], // 表格李
     };
   }
 
   componentDidMount() {
-    const {dataSource} = this.props;
-    this.setState({data: dataSource});
+    const {dataSource, columns} = this.props;
+    this.setState({data: dataSource, columns});
   }
 
   componentWillReceiveProps(nextProps) {
@@ -171,7 +172,6 @@ class EditableTable extends React.Component {
 
       const {editingKey} = this.state;
       const editable = this.isEditing(record);
-
 
       return editable ? (
         <span>
@@ -285,26 +285,27 @@ class EditableTable extends React.Component {
 
     const {data} = this.state;
     const components = {
-      body: {
+      body: {  // 表格行编辑
         cell: EditableCell,
       },
-      header: {
+      header: { // 表头拖拽
         cell: ResizeableTitle,
       },
     };
 
-    let columns = this.props.columns.map((col, index) => {
+    let columns = this.state.columns.map((col, index) => {
       if (!col.editable) {
         return col;
       }
       return {
         ...col,
-        onCell: record => ({
+        ellipsis: (col.ellipsis !== false ? true : false),
+        onCell: record => ({ // 表体Cell
           ...col,
           record,
           editing: this.isEditing(record),
         }),
-        onHeaderCell: column => ({
+        onHeaderCell: column => ({ // 表头Cell
           width: column.width || 100,
           onResize: this.handleResize(index),
         }),

@@ -197,6 +197,7 @@ class ProductAd extends React.Component {
       title: '下拉参照',
       dataIndex: 'canzao',
       key: 'canzao',
+      ellipsis: true,
       editable: true,
       inputType: 'ConSelectPromise',
       conAttr: {  // 表单属性
@@ -317,6 +318,8 @@ class ProductAd extends React.Component {
           {/*<ConTableResizable*/}
             {/*columns={this.columns}*/}
             {/*dataSource={mainData.rows}*/}
+            {/*size={'small'}*/}
+            {/*scroll={{x: 'max-content'}}*/}
             {/*rowKey="id"*/}
           {/*/>*/}
 

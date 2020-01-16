@@ -62,6 +62,7 @@ class conTableResizable extends React.Component {
     const {columns} = this.state;
     const tabCols = columns.map((col, index) => ({
       ...col,
+      ellipsis: (col.ellipsis !== false ? true : false),
       onHeaderCell: column => ({
         width: column.width || 100,
         onResize: this.handleResize(index),
@@ -71,8 +72,6 @@ class conTableResizable extends React.Component {
     return (<Table
       bordered
       {...this.props}
-      // dataSource={dataSource}
-      // rowKey={rowKey}
       components={this.components}
       columns={tabCols}
     />);
