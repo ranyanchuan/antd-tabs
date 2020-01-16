@@ -134,10 +134,6 @@ body {
   box-shadow: 0 2px 8px #f0f1f2;
 }
 
-/*表格行编辑*/
-.ant-form-explain {
-  position: absolute;
-}
 
 .ant-row, .ant-form-item .ant-col, .ant-form-item-control-wrapper, .ant-col-sm-18 {
   /*width: 100%;*/

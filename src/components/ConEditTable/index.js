@@ -264,11 +264,12 @@ class EditableTable extends React.Component {
 
   //-------表头拖拽
   handleResize = index => (e, {size}) => {
+    const minWidth = 60;
     this.setState(({columns}) => {
       const nextColumns = [...columns];
       nextColumns[index] = {
         ...nextColumns[index],
-        width: size.width,
+        width: size.width > minWidth ? size.width : minWidth,
       };
       return {columns: nextColumns};
     });
@@ -326,6 +327,8 @@ class EditableTable extends React.Component {
           }}
           size={'small'}
           scroll={{x: 'max-content'}}
+          // scroll={{x: '130%'}}
+
         />
       </EditableContext.Provider>
     );

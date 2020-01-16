@@ -120,8 +120,9 @@ class ProductAd extends React.Component {
   columns = [
     {
       title: '序号',
-      dataIndex: 'order',
-      key: 'order',
+      dataIndex: 'order1',
+      key: 'order1',
+      width: 60,
       render: (text, record, index) => {
         return index + 1;
       },
@@ -248,35 +249,6 @@ class ProductAd extends React.Component {
   ];
 
 
-  colaaa = [
-    {
-      title: 'Date',
-      dataIndex: 'date',
-      width: 200,
-    },
-    {
-      title: 'Amount',
-      dataIndex: 'amount',
-      width: 100,
-    },
-    {
-      title: 'Type',
-      dataIndex: 'type',
-      width: 100,
-    },
-    {
-      title: 'Note',
-      dataIndex: 'note',
-      width: 100,
-    },
-    {
-      title: 'Action',
-      key: 'action',
-      render: () => <a>Delete</a>,
-    },
-  ];
-
-
   // 关闭弹框
   onClickClose = () => {
     this.setState({visible: false, status: 'add'});
@@ -289,7 +261,6 @@ class ProductAd extends React.Component {
     const {mainData} = this.props.lineEditModel;
 
     // const {pageIndex, total, pageSize, rows} = adData;
-    console.log("colaaa", this.colaaa)
 
     return (
 
@@ -316,11 +287,11 @@ class ProductAd extends React.Component {
           />
 
           {/*<ConTableResizable*/}
-            {/*columns={this.columns}*/}
-            {/*dataSource={mainData.rows}*/}
-            {/*size={'small'}*/}
-            {/*scroll={{x: 'max-content'}}*/}
-            {/*rowKey="id"*/}
+          {/*columns={this.columns}*/}
+          {/*dataSource={mainData.rows}*/}
+          {/*size={'small'}*/}
+          {/*scroll={{x: 'max-content'}}*/}
+          {/*rowKey="id"*/}
           {/*/>*/}
 
         </Spin>
